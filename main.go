@@ -21,7 +21,7 @@ func main() {
 
 	mux.HandleFunc("/work", func(w http.ResponseWriter, r *http.Request) {
 		log.Println("Обработка запроса начата...")
-		time.Sleep(2 * time.Second)
+		time.Sleep(10 * time.Second)
 		fmt.Fprintln(w, "Работа завершена!")
 		log.Println("Обработка запроса завершена")
 	})
