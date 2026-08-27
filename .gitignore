@@ -1,0 +1,14 @@
+build/
+
+*.o
+*.so
+*.a
+*.out
+
+sysmon
+
+.vscode/
+.idea/
+.clangd/
+*.swp
+.DS_Store
