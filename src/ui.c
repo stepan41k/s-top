@@ -29,20 +29,32 @@ void ui_render(const MemoryStats *mem, const DiskStats *disk, double cpu,
     attroff(A_BOLD | A_REVERSE);
 
     int max_display = LINES - start_row - 2;
-    for (int i = 0; i < proc_count && i < max_display; i++) {
-        if (i == selected_idx) {
+    if (max_display <= 0) max_display = 1;
+
+    static int scroll_offset = 0;
+
+    if (selected_idx < scroll_offset) {
+        scroll_offset = selected_idx;
+    } else if (selected_idx >= scroll_offset + max_display) {
+        scroll_offset = selected_idx - max_display + 1;
+    }
+    
+    for (int i = 0; i < max_display && (i + scroll_offset) < proc_count; i++) {
+        int idx = i + scroll_offset;
+        
+        if (idx == selected_idx) {
             attron(A_REVERSE);
         }
 
         mvprintw(start_row + 1 + i, 0, " %-8d | %-9c | %-11ld | %s",
-                 procs[i].pid, procs[i].state, procs[i].rss_mb, procs[i].name);
+                 procs[idx].pid, procs[idx].state, procs[idx].rss_mb, procs[idx].name);
 
-        if (i == selected_idx) {
+        if (idx == selected_idx) {
             attroff(A_REVERSE);
         }
     }
 
-    mvprintw(LINES - 1, 0, "[Arrows]: Navigation | [K]: Kill process | [Q]: Quit");
+    mvprintw(LINES - 1, 0, "[Proccesses: %d/%d] | [Arrows]: Navigation | [K]: Kill process | [Q]: Quit", selected_idx + 1, proc_count);
     refresh();
 }
 
