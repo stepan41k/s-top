@@ -7,7 +7,7 @@ void ui_init(void) {
     cbreak();
     keypad(stdscr, TRUE);
     curs_set(0);
-    timeout(1000); 
+    timeout(50);
 }
 
 void ui_cleanup(void) {
